@@ -1,5 +1,6 @@
-biopython==1.79
-colorama==0.4.6
-pandas==2.0.3
-primer3_py==2.0.1
-SQLAlchemy==2.0.25
+Bio
+biopython
+colorama
+pandas
+primer3_py
+SQLAlchemy
