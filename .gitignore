@@ -1,6 +1,6 @@
 playground
-dbsnp.db
-00-common_all.vcf
-00-common_all.vcf.gz
-hg38.fa
-hg38.fa.gz
+DB/dbsnp.db
+DB/00-common_all.vcf
+DB/00-common_all.vcf.gz
+REFs/hg38.fa
+REFs/hg38.fa.gz
