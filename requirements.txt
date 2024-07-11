@@ -1,4 +1,4 @@
-biopython==1.83
+biopython==1.79
 colorama==0.4.6
 pandas==2.0.3
 primer3_py==2.0.1
