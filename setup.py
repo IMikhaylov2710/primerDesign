@@ -1,7 +1,7 @@
 import os
 
 #installing prerequesit programms
-os.system('conda install -c bioconda ncbi-blast vcftools')
+os.system('conda install -c bioconda blast vcftools')
 
 #wget hg38.fasta
 os.system('cd REFs/ && wget http://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/hg38.fa.gz')
