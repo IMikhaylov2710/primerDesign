@@ -8,6 +8,7 @@ from helpers.setupHelpers import add_rs
 
 #installing prerequesit programms
 os.system('conda install -c bioconda blast vcftools')
+os.system('conda install biopython primer3-py colorama pandas Bio')
 
 #wget hg38.fasta
 if not os.path.isfile('REFs/hg38.fa'):
