@@ -1,4 +1,5 @@
 import os
+import pandas as pd
 import sqlite3
 import sqlalchemy
 from sqlalchemy import create_engine, ForeignKey
@@ -46,6 +47,9 @@ Base.metadata.create_all(engine)
 #populating database
 print('===POPULATING DATABASE===')
 e = 1
+counter = 0 
+rows = []
+batchCounter = 0
 with sqlite3.connect('DB/dbsnp.db') as conn:
     with open('DB/00-common_all.vcf', 'r') as handle:
         for lin in handle:
@@ -53,7 +57,7 @@ with sqlite3.connect('DB/dbsnp.db') as conn:
                 ls = lin.split('\t')
                 info = ls[-1].split(';')
                 for unit in info:
-                    if 'CAF' in unit:
+                    if unit.startswith('CAF'):
                         if len(unit.split(',')) > 2:
                             ref = float(unit.split('=')[1].split(',')[0])
                             maf = [a for a in unit.split('=')[1].split(',')[1:]]
@@ -66,7 +70,20 @@ with sqlite3.connect('DB/dbsnp.db') as conn:
 
                         else:
                             ref = float(unit.split('=')[1].split(',')[0])
-                            alt = float(unit.split('=')[1].split(',')[1])
+                            alt = unit.split('=')[1].split(',')[1]
+                            if alt == '.':
+                                alt = 0
+                            else:
+                                alt = float(alt)
                 row = [e, 'chr'+ls[0], ls[1], ls[2], ls[3], ls[4], ref, alt]
                 e+=1
-                add_rs(conn, row)
+                if counter == 10000:
+                    counter = 0
+                    batchCounter +=1
+                    print('added 10000 rows, batch number is', batchCounter)
+                    rowsDf = pd.DataFrame(rows, columns = ['id', 'chromosome', 'coordinate', 'rs', 'refAllele', 'altAllele', 'refAlleleFrequency', 'altAlleleFrequencySum'])
+                    rowsDf.to_sql(name='dbsnp', con = conn, if_exists = 'append', index = False)
+                    rows = []
+                else:
+                    rows.append(row)
+                    counter+=1
