@@ -1,5 +1,5 @@
 from helpers.classes import Variant, Primer, ProbeBatch
-from helpers.DBlogic import connectToDBSNP, getByRs, getRsByCoord
+from helpers.dbLogic import connectToDBSNP, getByRs, getRsByCoord
 from helpers.slurmHelpers import addSlurmTask
 import argparse
 import os
@@ -11,9 +11,18 @@ parser.add_argument("--batch", action = "store_true", help = "use this flag to p
 parser.add_argument("--slurm", action = "store_true", help = "use multiprocessing using SLURM cluster")
 args = parser.parse_args()
 
+jobID = 1
+resultingRsList = [str(rs.strip())for rs in args.BatchRS.split(',')]
 if not args.test:
-    addSlurmTask()
+    for rs in resultingRsList:
+        addSlurmTask(f'job{jobID}', 
+                     f'job{jobID}', 
+                     'chr1', 
+                     '1000000', 
+                     'testGene', 
+                     '~/out/fastaPath/', 
+                     '~/out/tsvPath')
+        jobID+=1
 else:
-    conn = connectToDBSNP()
     rsList = getByRs('rs1274', conn)
     danger = getRsByCoord('chr1', '100000', '200000', conn)

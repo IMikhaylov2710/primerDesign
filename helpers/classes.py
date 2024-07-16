@@ -5,7 +5,6 @@ import primer3
 from colorama import Fore
 from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
-from DBlogic import getRsByCoord, getByRs
 
 class Variant:
 

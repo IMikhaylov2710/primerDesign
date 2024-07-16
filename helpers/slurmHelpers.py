@@ -1,15 +1,16 @@
 import os
+
 def addSlurmTask(jobName, 
                  logName, 
-                 folder, 
                  chromosome, 
                  coordinate, 
                  geneName, 
                  fastaPath, 
                  tsvPath, 
-                 partition = "AI"
+                 partition = "AI", 
+                 folder = '~/'
                  ):
-    os.system(f'#!/bin/bash\
+    print(f'#!/bin/bash\
     #SBATCH --nodes=1\
     #SBATCH --ntasks=1\
     #SBATCH --job-name={jobName}\
