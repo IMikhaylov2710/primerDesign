@@ -1,11 +1,10 @@
 import os
 import pandas as pd
 import sqlite3
-import sqlalchemy
-from sqlalchemy import create_engine, ForeignKey
+from sqlalchemy import create_engine
 from sqlalchemy import Column, Date, Integer, String
+from sqlalchemy.sql import func
 from sqlalchemy.ext.declarative import declarative_base
-from helpers.setupHelpers import add_rs
 
 #wget hg38.fasta
 if not os.path.isfile('REFs/hg38.fa'):
@@ -40,7 +39,22 @@ class VariantInfo(Base):
 
     def __init__(self, name):
 
-        self.name = name    
+        self.name = name   
+
+class ProgressStatus(Base):
+
+    __tablename__ = "status"
+
+    id = Column(Integer, primary_key=True)
+    taskName = Column(String)
+    status = Column(Boolean) 
+    timeCreated = Column(DateTime(timezone=True), server_default=func.now())
+    timeUpdated = Column(DateTime(timezone=True), onupdate=func.now())
+    rsList = Column(String)
+
+    def __init__(self, name):
+        
+        self.name = name
 
 Base.metadata.create_all(engine)
 
