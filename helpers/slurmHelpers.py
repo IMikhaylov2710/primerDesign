@@ -10,12 +10,12 @@ def addSlurmTask(jobName,
                  partition = "AI", 
                  folder = '~/'
                  ):
-    print(f'#!/bin/bash\
-    #SBATCH --nodes=1\
-    #SBATCH --ntasks=1\
-    #SBATCH --job-name={jobName}\
-    #SBATCH --output=logs/{logName}.out\
-    #SBATCH --error=logs/{logName}.err\
-    #SBATCH --partition={partition}\
+    print(f'sbatch\
+    --nodes=1\
+    --ntasks=1\
+    --job-name={jobName}\
+    --output=logs/{logName}.out\
+    --error=logs/{logName}.err\
+    --partition={partition}\
     source activate primers\
     srun cd {folder} && srun python3 singleTask.py -chr {chromosome} -coord {coordinate} -gn {geneName} -fasta {fastaPath} -tsv {tsvPath}')

@@ -21,7 +21,7 @@ if not args.test:
                      '1000000', 
                      'testGene', 
                      '~/out/fastaPath/', 
-                     '~/out/tsvPath')
+                     '~/out/tsvPath/')
         jobID+=1
 else:
     rsList = getByRs('rs1274', conn)
