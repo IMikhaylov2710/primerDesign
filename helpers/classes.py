@@ -72,8 +72,8 @@ class Variant:
         self.pairs = []
         for forward in self.fwCandidates:
             for reverse in self.rvCandidates:
-                pair = primer3.calc_heterodimer_tm(str(forward[0].seq), str(reverse[0].seq))
-                if pair < 0 and self.ampliconMinLength < reverse[1]-forward[1] < self.ampliconMaxLength:
+                pairTm = primer3.calc_heterodimer_tm(str(forward[0].seq), str(reverse[0].seq))
+                if pairTm < 0 and self.ampliconMinLength < reverse[1]-forward[1] < self.ampliconMaxLength:
                     self.pairs.append([forward, reverse])
     
     def reducePairs(self):
@@ -87,9 +87,6 @@ class Variant:
                 fwToRvs[pair[0][0]] = [[pair[0][0], pair[1][0], pair[0][1], pair[1][1], float(pair[1][1])-float(pair[0][1])]]
         for k in fwToRvs:
             print(k)
-            for pairBatch in fwToRvs[k]:
-                #self.reducedPairs.append()
-                print('\t', pairBatch[0], pairBatch[1], pairBatch[2])
             optimalCandidate = sorted(fwToRvs[k], key=lambda l: l[-1]-180)[-1]
             print('\t REDUCED TO', optimalCandidate)
         self.reducedPairs.append([[optimalCandidate[0], optimalCandidate[2]], [optimalCandidate[1], optimalCandidate[3]]])
