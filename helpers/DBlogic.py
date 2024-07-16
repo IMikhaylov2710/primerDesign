@@ -9,6 +9,6 @@ def getByRs(rs, engine):
     df = pd.read_sql(f'SELECT * FROM dbsnp WHERE rs = {rs}', engine)
     return df
 
-def gerRsByCoord(chromosome, start, end, engine):
+def getRsByCoord(chromosome, start, end, engine):
     df = pd.read_sql(f'SELECT * FROM dbsnp WHERE chromosome = {chromosome} AND coordinate >= {start} AND coordinate <= {end}', engine)
     return df

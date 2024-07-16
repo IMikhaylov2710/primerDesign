@@ -1,5 +1,5 @@
 from helpers.classes import Variant, Primer, ProbeBatch
-from helpers.DBlogic import connectToDBSNP, getByRs, gerRsByCoord
+from helpers.DBlogic import connectToDBSNP, getByRs, getRsByCoord
 
 '''newVar = Variant(155183132, 1, 'TRIM46', delta=150)
 newVar.getRegion('hg38')
@@ -13,4 +13,4 @@ newVar.runBlast('/home/ivan/Downloads/trim46.tsv')'''
 #fetch rs from dbsnp
 conn = connectToDBSNP()
 rsList = getByRs('rs1274', conn)
-danger = gerRsByCoord('chr1', '100000', '200000', conn)
+danger = getRsByCoord('chr1', '100000', '200000', conn)

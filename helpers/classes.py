@@ -5,6 +5,7 @@ import primer3
 from colorama import Fore
 from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
+from DBlogic import getRsByCoord
 
 class Variant:
 
@@ -190,8 +191,8 @@ class Primer:
         else:
             return False
         
-    def checkAlleleDropout(self, checkRs, conn):
-        if checkRs(self.chromosome, self.primerStart, self.primerEnd, conn):
+    def checkAlleleDropout(self, getRsByCoord, conn):
+        if getRsByCoord(self.chromosome, self.primerStart, self.primerEnd, conn):
             self.HasAlleleDropout = False
         else:
             self.HasAlleleDropout = True
