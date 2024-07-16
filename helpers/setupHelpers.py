@@ -1,5 +1,4 @@
 #legacy
-
 def add_rs(conn, task):
     sql = '''INSERT INTO dbsnp(id, chromosome, coordinate, rs, refAllele, altAllele, refAlleleFrequency, altAlleleFrequencySum)
              VALUES(?,?,?,?,?,?,?,?) '''

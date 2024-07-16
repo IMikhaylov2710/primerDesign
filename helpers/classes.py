@@ -5,7 +5,7 @@ import primer3
 from colorama import Fore
 from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
-from DBlogic import getRsByCoord
+from DBlogic import getRsByCoord, getByRs
 
 class Variant:
 
@@ -57,12 +57,14 @@ class Variant:
         lengths = kwargs.get('lengths', [18, 19, 20, 21, 22])
 
         for l in lengths:
+            
             for i in range(0, len(self.fwRegion)-l):
                 i = int(i)
                 candidate = Primer(str(self.fwRegion[i:i+l]).upper(), self.ampliconStart+i, i, self.chromosome)
                 candidate.checkAlleleDropout()
                 if candidate.isUsable(tmLower = tmOptimum-tmDelta, tmHigher = tmOptimum+tmDelta) and not candidate.HasAlleleDropout:
                     self.fwCandidates.append([candidate, i])
+
             for i in range(0, len(self.rvRegion)-l):
                 i = int(i)
                 candidate = Primer(str(self.rvRegion[i:i+l]).upper(), self.coordinate+i, i, self.chromosome, orient='rv')
