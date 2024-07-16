@@ -58,13 +58,15 @@ class Variant:
         for l in lengths:
             for i in range(0, len(self.fwRegion)-l):
                 i = int(i)
-                candidate = Primer(str(self.fwRegion[i:i+l]).upper(), self.ampliconStart, i)
-                if candidate.isUsable(**{'tmLower': tmOptimum-tmDelta, 'tmHigher': tmOptimum+tmDelta}):
+                candidate = Primer(str(self.fwRegion[i:i+l]).upper(), self.ampliconStart+i, i, self.chromosome)
+                candidate.checkAlleleDropout()
+                if candidate.isUsable(tmLower = tmOptimum-tmDelta, tmHigher = tmOptimum+tmDelta) and not candidate.HasAlleleDropout:
                     self.fwCandidates.append([candidate, i])
             for i in range(0, len(self.rvRegion)-l):
                 i = int(i)
-                candidate = Primer(str(self.fwRegion[i:i+l]).upper(), self.ampliconStart, i, **{'orient': 'rv'})
-                if candidate.isUsable(**{'tmLower': tmOptimum-tmDelta, 'tmHigher': tmOptimum+tmDelta}):
+                candidate = Primer(str(self.rvRegion[i:i+l]).upper(), self.coordinate+i, i, self.chromosome, orient='rv')
+                candidate.checkAlleleDropout()
+                if candidate.isUsable(tmLower = tmOptimum-tmDelta, tmHigher = tmOptimum+tmDelta) and not candidate.HasAlleleDropout:
                     self.rvCandidates.append([candidate, i+len(self.fwRegion)+len(candidate.seq)])
 
 
@@ -79,7 +81,6 @@ class Variant:
     def reducePairs(self):
         self.reducedPairs = []
         fwToRvs = {}
-        fwToRvsTm = {}
         for pair in self.pairs:
             try:
                 fwToRvs[pair[0][0]].append([pair[0][0], pair[1][0], pair[0][1], pair[1][1], float(pair[1][1])-float(pair[0][1])])
@@ -137,7 +138,7 @@ class Variant:
                             
 class Primer:
 
-    def __init__(self, seq, ampliconStart, iterator, **kwargs):
+    def __init__(self, seq, ampliconStart, iterator, chromosome, **kwargs):
 
         self.orientation = kwargs.get('orient', 'fw')
         if self.orientation == 'fw':
@@ -159,7 +160,10 @@ class Primer:
         else:
             self.hasHairpin = False
         
-        self.coordinateGeneral = ampliconStart+iterator
+        self.primerStart = ampliconStart
+        self.primerEnd = ampliconStart+iterator
+
+        self.chromosome = chromosome
 
     def __str__(self):
         return f'{self.seq}|{self.Tm}|{self.orientation}'
@@ -186,6 +190,12 @@ class Primer:
         else:
             return False
         
+    def checkAlleleDropout(self, checkRs, conn):
+        if checkRs(self.chromosome, self.primerStart, self.primerEnd, conn):
+            self.HasAlleleDropout = False
+        else:
+            self.HasAlleleDropout = True
+
 class ProbeBatch:
 
     def __init__(self, seq, altSeq, coordinate, fwPrimer, rvPrimer):
@@ -273,7 +283,6 @@ class ProbeBatch:
             
             return print('no probes selected')
         
-
         [
             self.resultSeqRef,
             self.resultSeqAlt,
