@@ -1,8 +1,6 @@
 import os
 from Bio import SeqIO
-import pandas as pd
 import primer3
-from colorama import Fore
 from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
 
@@ -44,7 +42,7 @@ class Variant:
             print('no pairs selected yet, run Variant.findPrimers() and Variant.getPairs()')
 
     def getRegion(self, ref):
-        for record in SeqIO.parse(f'/home/ivan/REFs/{ref}.fasta', 'fasta'):
+        for record in SeqIO.parse(f'../DB/{ref}.fasta', 'fasta'):
             if record.id == self.chromosome:
                 self.fwRegion = record.seq[self.ampliconStart:self.coordinate]
                 self.rvRegion = record.seq[self.coordinate:self.ampliconEnd]
@@ -112,7 +110,7 @@ class Variant:
         SeqIO.write(toWrite, path, 'fasta')
         self.path = path
 
-    def runBlast(self, tsvPath, dbpath='/home/ivan/REFs/hg38.fasta'):
+    def runBlast(self, tsvPath, dbpath='../DB/hg38.fasta'):
         os.system(f'blastn -query {self.path} -outfmt 6 -word_size 8 -db {dbpath} -out {tsvPath}')
         self.blastOutPath = tsvPath
 

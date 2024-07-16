@@ -2,7 +2,7 @@ import os
 import pandas as pd
 import sqlite3
 from sqlalchemy import create_engine
-from sqlalchemy import Column, DateTime, Integer, String, Boolean
+from sqlalchemy import Column, DateTime, Integer, String, Boolean, ForeignKey
 from sqlalchemy.sql import func
 from sqlalchemy.ext.declarative import declarative_base
 
@@ -50,7 +50,21 @@ class ProgressStatus(Base):
     ready = Column(Boolean, default = False) 
     timeCreated = Column(DateTime(timezone = True), server_default=func.now())
     timeUpdated = Column(DateTime(timezone = True), onupdate=func.now())
-    rsList = Column(String)
+
+    def __init__(self, name):
+        
+        self.name = name
+
+class RsStatus(Base):
+
+    __tableName__ = "rsstatus"
+
+    id = Column(Integer, primary_key=True)
+    taskId = Column(ForeignKey("status.id"))
+    rs = Column(String)
+    finished = Column(Boolean, default = False)
+    timeCreated = Column(DateTime(timezone = True), server_default=func.now())
+    timeUpdated = Column(DateTime(timezone = True), onupdate=func.now())
 
     def __init__(self, name):
         

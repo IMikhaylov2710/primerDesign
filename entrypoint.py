@@ -1,8 +1,6 @@
-from helpers.classes import Variant, Primer, ProbeBatch
 from helpers.dbLogic import connectToDBSNP, getByRs, getRsByCoord
 from helpers.slurmHelpers import addSlurmTask
 import argparse
-import os
 
 parser = argparse.ArgumentParser(description='Script for primer design')
 parser.add_argument("-b", "--BatchRS", help = "list of rs, separated by ',' to use for batch analysis")
