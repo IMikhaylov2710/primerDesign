@@ -1,6 +1,5 @@
 Bio==1.7.1
 biopython==1.84
-colorama==0.4.6
 pandas==2.0.3
 primer3_py==2.0.3
 SQLAlchemy==1.4.39
