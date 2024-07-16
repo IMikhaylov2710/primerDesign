@@ -2,7 +2,7 @@ import os
 import pandas as pd
 import sqlite3
 from sqlalchemy import create_engine
-from sqlalchemy import Column, Date, Integer, String
+from sqlalchemy import Column, DateTime, Integer, String, Boolean
 from sqlalchemy.sql import func
 from sqlalchemy.ext.declarative import declarative_base
 
@@ -36,7 +36,6 @@ class VariantInfo(Base):
     refAlleleFrequency = Column(String)
     altAlleleFrequencySum = Column(String)
 
-
     def __init__(self, name):
 
         self.name = name   
@@ -47,9 +46,10 @@ class ProgressStatus(Base):
 
     id = Column(Integer, primary_key=True)
     taskName = Column(String)
-    status = Column(Boolean) 
-    timeCreated = Column(DateTime(timezone=True), server_default=func.now())
-    timeUpdated = Column(DateTime(timezone=True), onupdate=func.now())
+    status = Column(String, default = 'Started')
+    ready = Column(Boolean, default = False) 
+    timeCreated = Column(DateTime(timezone = True), server_default=func.now())
+    timeUpdated = Column(DateTime(timezone = True), onupdate=func.now())
     rsList = Column(String)
 
     def __init__(self, name):
